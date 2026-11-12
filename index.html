@@ -1,0 +1,555 @@
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ValutaX - Currency Converter</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+font-family:Arial,sans-serif;
+background:#0b1020;
+color:white;
+min-height:100vh;
+transition:.3s;
+}
+
+body.light{
+background:#f1f4fb;
+color:#17223a;
+}
+
+header{
+height:75px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 7%;
+border-bottom:1px solid #ffffff18;
+}
+
+.logo{
+font-size:25px;
+font-weight:900;
+color:white;
+}
+
+body.light .logo{color:#17223a}
+
+.logo span{color:#8c7cff}
+
+button,select,input{font:inherit}
+
+.theme{
+background:#202943;
+color:white;
+border:0;
+padding:11px 15px;
+border-radius:10px;
+cursor:pointer;
+}
+
+body.light .theme{background:#e2e7f3;color:#17223a}
+
+.hero{
+text-align:center;
+padding:55px 15px 35px;
+}
+
+.hero small{
+color:#9c8cff;
+letter-spacing:3px;
+font-weight:bold;
+}
+
+.hero h1{
+font-size:43px;
+margin:17px 0;
+}
+
+.hero h1 span{
+color:#8c7cff;
+}
+
+.hero p{color:#8995ae}
+
+.container{
+max-width:1000px;
+margin:auto;
+padding:20px;
+}
+
+.layout{
+display:grid;
+grid-template-columns:1.5fr 1fr;
+gap:20px;
+}
+
+.card{
+background:#141d32;
+border:1px solid #ffffff15;
+border-radius:18px;
+padding:25px;
+}
+
+body.light .card{
+background:white;
+border-color:#dfe4ef;
+}
+
+.card h2{margin-bottom:25px}
+
+.label{
+color:#9ba7be;
+font-size:13px;
+margin:15px 0 8px;
+}
+
+.field{
+display:flex;
+align-items:center;
+justify-content:space-between;
+background:#202b43;
+border:1px solid #ffffff15;
+border-radius:12px;
+padding:15px;
+gap:10px;
+}
+
+body.light .field{background:#f1f4fa}
+
+.field input{
+background:transparent;
+border:0;
+outline:0;
+color:white;
+font-size:25px;
+font-weight:bold;
+width:55%;
+}
+
+body.light .field input{color:#17223a}
+
+.field select{
+width:43%;
+max-width:170px;
+background:#303b55;
+color:white;
+border:0;
+padding:12px 5px;
+border-radius:8px;
+outline:none;
+}
+
+body.light .field select{
+background:#e2e7f3;
+color:#17223a;
+}
+
+.swap{
+display:flex;
+justify-content:center;
+margin:12px;
+}
+
+.swap button{
+width:43px;
+height:43px;
+border-radius:12px;
+border:1px solid #8879ff;
+background:#8879ff22;
+color:#a99dff;
+font-size:23px;
+cursor:pointer;
+}
+
+.result{
+font-size:25px;
+font-weight:bold;
+color:#65d7bb;
+word-break:break-word;
+}
+
+.convert{
+width:100%;
+margin-top:22px;
+padding:16px;
+border:0;
+border-radius:12px;
+background:linear-gradient(100deg,#8172f4,#637ff5);
+color:white;
+font-weight:bold;
+cursor:pointer;
+font-size:15px;
+}
+
+.convert:hover{filter:brightness(1.15)}
+
+.summary{
+margin-top:18px;
+font-size:12px;
+color:#9ba7be;
+}
+
+.side h3{
+font-size:13px;
+color:#9c8cff;
+margin-bottom:20px;
+}
+
+.popular{
+display:flex;
+justify-content:space-between;
+padding:14px 0;
+border-bottom:1px solid #ffffff15;
+font-size:13px;
+}
+
+.popular strong{color:#68d8b8}
+
+.rates{
+margin-top:60px;
+}
+
+.rates h2{margin-bottom:20px}
+
+.search{
+width:100%;
+padding:14px;
+border:1px solid #ffffff20;
+background:#141d32;
+color:white;
+border-radius:10px;
+outline:none;
+margin-bottom:18px;
+}
+
+body.light .search{
+background:white;
+color:#17223a;
+}
+
+.tablebox{
+overflow-x:auto;
+background:#141d32;
+border-radius:15px;
+}
+
+body.light .tablebox{background:white}
+
+table{
+width:100%;
+border-collapse:collapse;
+min-width:550px;
+}
+
+th,td{
+padding:16px;
+text-align:left;
+border-bottom:1px solid #ffffff12;
+font-size:13px;
+}
+
+th{color:#9ba7be;font-size:11px}
+
+.up{color:#5bd7a8}
+.down{color:#ff8194}
+
+footer{
+text-align:center;
+padding:35px;
+color:#8995ae;
+font-size:12px;
+}
+
+@media(max-width:700px){
+.layout{grid-template-columns:1fr}
+.hero h1{font-size:34px}
+header{padding:0 5%}
+.card{padding:18px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">Valuta<span>X</span></div>
+<button class="theme" onclick="theme()">☀ / ☾</button>
+</header>
+
+<section class="hero">
+<small>FINANCIAL DATA CENTER</small>
+<h1>Currency <span>Converter</span></h1>
+<p>Dunyo valyutalarini tez va oson hisoblang.</p>
+</section>
+
+<main class="container">
+
+<div class="layout">
+
+<div class="card">
+<h2>Valyuta konvertori</h2>
+
+<div class="label">Siz yuborasiz</div>
+
+<div class="field">
+<input type="number" id="amount" value="1" min="0">
+<select id="from"></select>
+</div>
+
+<div class="swap">
+<button onclick="swap()">⇅</button>
+</div>
+
+<div class="label">Siz olasiz</div>
+
+<div class="field">
+<div class="result" id="result">11 994.10</div>
+<select id="to"></select>
+</div>
+
+<div class="summary" id="summary"></div>
+
+<button class="convert" onclick="calculate()">
+Hisoblash →
+</button>
+
+</div>
+
+<div class="card side">
+<h3>★ MASHHUR VALYUTALAR</h3>
+<div id="popular"></div>
+</div>
+
+</div>
+
+<section class="rates">
+<h2>Barcha valyutalar</h2>
+
+<input
+class="search"
+id="search"
+placeholder="Valyuta qidirish..."
+oninput="renderTable()"
+>
+
+<div class="tablebox">
+<table>
+<thead>
+<tr>
+<th>VALYUTA</th>
+<th>KOD</th>
+<th>UZS KURSI</th>
+<th>O'ZGARISH</th>
+</tr>
+</thead>
+<tbody id="table"></tbody>
+</table>
+</div>
+</section>
+
+</main>
+
+<footer>
+ValutaX © 2026 | Professional Currency Converter
+</footer>
+
+<script>
+
+// JSON MA'LUMOTLARI
+const raw = [
+["USD","AQSH dollari",11994.10,6.94],
+["EUR","EVRO",13420.20,26.95],
+["RUB","Rossiya rubli",145.79,-0.5],
+["GBP","Angliya funti",16087.69,27.29],
+["JPY","Yaponiya iyenasi",75.93,0.22],
+["AZN","Ozarbayjon manati",7055.35,4.08],
+["BDT","Bangladesh takasi",96.57,0.33],
+["BHD","Bahrayn dinori",31797.72,26.82],
+["BND","Bruney dollari",9371.85,17.11],
+["BRL","Braziliya reali",2178.41,0.59],
+["BYN","Belorus rubli",4005.78,2.99],
+["CAD","Kanada dollari",8512.49,-10.8],
+["CHF","Shveytsariya franki",14651.97,1.32],
+["CNY","Xitoy yuani",1797.46,0.5],
+["CUP","Kuba pesosi",499.75,0.28],
+["CZK","Chexiya kronasi",551.07,1.1],
+["DKK","Daniya kronasi",1795.26,3.62],
+["DZD","Jazoir dinori",88.08,0.1],
+["EGP","Misr funti",222.11,-0.62],
+["AFN","Afg'oniston afg'onisi",184.18,0.1],
+["ARS","Argentina pesosi",7.76,0],
+["GEL","Gruziya larisi",4625.57,2.68],
+["HKD","Gongkong dollari",1529.55,0.03],
+["HUF","Vengriya forinti",36.98,0.22],
+["IDR","Indoneziya rupiyasi",6.64,0.01],
+["ILS","Isroil shekeli",3786.26,38.63],
+["INR","Hindiston rupiyasi",127.69,0.04],
+["IQD","Iroq dinori",7.91,0],
+["IRR","Eron riali",0.006,0],
+["ISK","Islandiya kronasi",98.10,0.19],
+["JOD","Iordaniya dinori",16916.93,9.79],
+["AUD","Avstraliya dollari",8275.93,35.96],
+["KGS","Qirg'iz somi",137.11,0.08],
+["KHR","Kambodja riyeli",2.94,0],
+["KRW","Koreya voni",8.91,0.08],
+["KWD","Quvayt dinori",38903.99,-28],
+["KZT","Qozog'iston tengesi",26.72,-0.01],
+["LAK","Laos kipisi",0.53,0],
+["LBP","Livan funti",0.13,0],
+["LYD","Liviya dinori",1866.67,-6.41],
+["MAD","Marokash dirhami",1225.96,-2.51],
+["MDL","Moldaviya leyi",665.41,-5.2],
+["MMK","Myanma kyati",5.71,0],
+["MNT","Mongoliya tugriki",3.33,0],
+["MXN","Meksika pesosi",646.28,5.56],
+["MYR","Malayziya ringgiti",2954.94,1.71],
+["NOK","Norvegiya kronasi",1275.67,0.59],
+["NZD","Yangi Zelandiya dollari",6731.09,86.61],
+["OMR","Ummon riali",31153.51,18.03],
+["PHP","Filippin pesosi",189.70,-0.48],
+["PKR","Pokiston rupiyasi",43.35,0.01],
+["PLN","Polsha zlotiysi",3060.73,12.89],
+["QAR","Qatar riali",3290.56,0.64],
+["RON","Ruminiya leyi",2511.27,3.81],
+["RSD","Serbiya dinori",114.07,0.2],
+["AMD","Armaniston drami",33.18,-0.07],
+["SAR","Saudiya riali",3195.36,1.76],
+["SDG","Sudan funti",19.98,0.01],
+["SEK","Shvetsiya kronasi",1220.85,6.35],
+["SGD","Singapur dollari",9371.85,17.84],
+["SYP","Suriya funti",98.31,0.07],
+["THB","Tailand bati",357.93,0.64],
+["TJS","Tojikiston somonisi",1306.55,7.13],
+["TMT","Turkmaniston manati",3426.89,1.99],
+["TND","Tunis dinori",3989.12,-26.01],
+["TRY","Turkiya lirasi",239.02,-0.59],
+["UAH","Ukraina grivnasi",263.28,-1.32],
+["AED","BAA dirhami",3265.39,1.62],
+["UYU","Urugvay pesosi",297.44,-0.49],
+["VES","Venesuela bolivari",13.38,-0.01],
+["VND","Vetnam dongi",0.47,0.01],
+["XDR","SDR",16238.59,-20.26],
+["YER","Yaman riali",50.80,0.04],
+["ZAR","Janubiy Afrika randi",729.54,4.45]
+];
+
+const currencies = raw.map(x=>({
+code:x[0],name:x[1],rate:x[2],diff:x[3]
+}));
+
+function fmt(n){
+return Number(n).toLocaleString("en-US",{
+maximumFractionDigits:4
+});
+}
+
+function get(code){
+if(code==="UZS"){
+return {code:"UZS",name:"O'zbekiston so'mi",rate:1};
+}
+return currencies.find(c=>c.code===code);
+}
+
+function setup(){
+let options='<option value="UZS">UZS — So‘m</option>';
+
+options+=currencies.map(c=>
+`<option value="${c.code}">${c.code} — ${c.name}</option>`
+).join("");
+
+document.getElementById("from").innerHTML=options;
+document.getElementById("to").innerHTML=options;
+
+document.getElementById("from").value="USD";
+document.getElementById("to").value="UZS";
+
+calculate();
+renderPopular();
+renderTable();
+}
+
+function calculate(){
+let amount=Number(document.getElementById("amount").value);
+let from=get(document.getElementById("from").value);
+let to=get(document.getElementById("to").value);
+
+if(!Number.isFinite(amount)||amount<0){
+document.getElementById("result").innerText="—";
+return;
+}
+
+let answer=amount*from.rate/to.rate;
+
+document.getElementById("result").innerText=fmt(answer);
+
+document.getElementById("summary").innerText=
+`1 ${from.code} = ${fmt(from.rate/to.rate)} ${to.code}`;
+}
+
+function swap(){
+let a=document.getElementById("from");
+let b=document.getElementById("to");
+
+let temp=a.value;
+a.value=b.value;
+b.value=temp;
+
+calculate();
+}
+
+function renderPopular(){
+let popular=["USD","EUR","RUB","GBP","CNY"];
+
+document.getElementById("popular").innerHTML=
+popular.map(code=>{
+let c=get(code);
+
+return `
+<div class="popular">
+<span>${c.code} — ${c.name}</span>
+<strong>${fmt(c.rate)} UZS</strong>
+</div>
+`;
+}).join("");
+}
+
+function renderTable(){
+let search=document.getElementById("search").value.toLowerCase();
+
+let filtered=currencies.filter(c=>
+c.code.toLowerCase().includes(search)||
+c.name.toLowerCase().includes(search)
+);
+
+document.getElementById("table").innerHTML=
+filtered.map(c=>`
+<tr>
+<td>${c.name}</td>
+<td><b>${c.code}</b></td>
+<td>${fmt(c.rate)} UZS</td>
+<td class="${c.diff>=0?'up':'down'}">
+${c.diff>0?'+':''}${c.diff}
+</td>
+</tr>
+`).join("");
+}
+
+function theme(){
+document.body.classList.toggle("light");
+}
+
+document.getElementById("amount").addEventListener("input",calculate);
+document.getElementById("from").addEventListener("change",calculate);
+document.getElementById("to").addEventListener("change",calculate);
+
+setup();
+
+</script>
+
+</body>
+</html>
